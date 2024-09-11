@@ -8,51 +8,54 @@ function PopupBox({ buttonclick, btnclickcheck }) {
   const [selectedDropdownid, setSelectedDropdwonid] = useState([]);
   const [selectedDropdownoptiondisplay, setSelectedDropdownoptiondisplay] =
     useState(["Add schema to segment"]);
+  const [selecteddropdownid,setSelectedDropdownid] = useState([]);
 
   const [usernameinput, setUsernameinput] = useState([]);
 
-  const [dropdownopen, setDropdownopen] = useState(false);
+  const [dropdownopen, setDropdownopen] = useState(false); 
 
   const [dynamicdropdownopen, setDynamicdropdownopen] = useState(false);
   const [selectdropdown, setSelectdropdown] = useState(false);
 
   const [selecteddynamicoption, setSelecteddynamicoption] = useState([]);
+  const [selecteddynamicoptionid, setSelecteddynamicoptionid] = useState([]);
+
 
   const [optionvalues, setOptionvalues] = useState([
     {
       label: "First Name",
       value: "first_name",
-      id: 2,
+      id: 1,
     },
     {
       label: "Last Name",
       value: "last_name",
-      id: 3,
+      id: 2,
     },
     {
       label: "Gender",
       value: "gender",
-      id: 4,
+      id: 3,
     },
     {
       label: "Age",
       value: "age",
-      id: 5,
+      id: 4,
     },
     {
       label: "Account Name",
       value: "account_name",
-      id: 6,
+      id: 5,
     },
     {
       label: "City",
       value: "city",
-      id: 7,
+      id: 6,
     },
     {
       label: "State",
       value: "state",
-      id: 8,
+      id: 7,
     },
   ]);
 
@@ -60,37 +63,37 @@ function PopupBox({ buttonclick, btnclickcheck }) {
     {
       label: "First Name",
       value: "first_name",
-      id: 2,
+      id: 1,
     },
     {
       label: "Last Name",
       value: "last_name",
-      id: 3,
+      id: 2,
     },
     {
       label: "Gender",
       value: "gender",
-      id: 4,
+      id: 3,
     },
     {
       label: "Age",
       value: "age",
-      id: 5,
+      id: 4,
     },
     {
       label: "Account Name",
       value: "account_name",
-      id: 6,
+      id: 5,
     },
     {
       label: "City",
       value: "city",
-      id: 7,
+      id: 6,
     },
     {
       label: "State",
       value: "state",
-      id: 8,
+      id: 7,
     },
   ]);
 
@@ -110,6 +113,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
           selectedDropdownoptiondisplay[
             selectedDropdownoptiondisplay.length - 1
           ],
+        id:selecteddropdownid
       },
     ]);
     setUserdatastored({
@@ -119,31 +123,30 @@ function PopupBox({ buttonclick, btnclickcheck }) {
   };
 
   const handleSendData = async () => {
-    const webhookUrl =
+    const webhookurl =
       "https://webhook.site/5de5b544-6904-45f7-acc0-763453e5b7e9";
 
     try {
-      const response = await fetch(webhookUrl, {
+      const response = await fetch(webhookurl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        mode: "cors",
-        body: JSON.stringify(userdatastored), // Send data as JSON
+        body: JSON.stringify(userdatastored), 
       });
 
       if (response.ok) {
-        console.log("Data sent successfully");
+        console.log("data sent done");
       } else {
-        console.log("Error sending data", response.status);
+        console.log("Error", response.status);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
 
-  console.log(selectedDropdownid, userdatastored);
-  console.log(selectedDropdownoptiondisplay);
+  // console.log(selectedDropdownid, userdatastored);
+  console.log(selecteddynamicoption, selecteddynamicoptionid);
 
   return (
     <>
@@ -155,7 +158,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
           position: "absolute",
           top: 0,
           overflowX: "hidden",
-          height: "100vh",
+          // height: "100vh",
           backgroundColor: btnclickcheck ? "rgba(0, 0, 0, 0.7)" : "",
         }}
       >
@@ -228,10 +231,9 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                 >
                   {buttoncreated?.map((item, index) => {
                     return (
-                      <>
+                      <div style={{marginTop:"5px"}}>
                         <div style={{ display: "flex", width: "100%" }}>
                           <button
-                            key={item.label}
                             style={{
                               padding: "8px",
                               display: "flex",
@@ -243,22 +245,19 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                             }}
                             value={item.label}
                             onClick={() => {
-                              // alert("h")
                               setSelectdropdown(item.label);
+                              setSelecteddynamicoptionid(item.id);
                               setDynamicdropdownopen(true);
                               if (dynamicdropdownopen) {
                                 setDynamicdropdownopen(false);
                               }
                             }}
                           >
-                            {selecteddynamicoption.length == 0
-                              ? item.label
-                              : selecteddynamicoption}
+                            {item.label}
                           </button>
                           <button
                             style={{ border:"1px solid",borderLeft: "none"}}
                             onClick={() => {
-                              // alert("h")
                               setSelectdropdown(item.label);
                               setDynamicdropdownopen(true);
                               if (dynamicdropdownopen) {
@@ -272,7 +271,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
 
                         {dynamicdropdownopen && item.label == selectdropdown ? (
                           <div
-                            style={{ marginTop: "-15px",border:"1px solid",borderTop: "none"  }}
+                            style={{border:"1px solid",borderTop: "none"  }}
                             onMouseLeave={() => {
                               setDynamicdropdownopen(false);
                             }}
@@ -282,6 +281,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                                 return (
                                   <button
                                     value={item.label}
+                                    id={item.id}
                                     className={Popupboxstyle.optionbutton}
                                     onClick={(e) => {
                                       setSelecteddynamicoption(e.target.value);
@@ -290,6 +290,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                                       setDynamicOptionvalues(del);
                                       setDynamicdropdownopen(false);
                                     }}
+                                    // key={index}
                                   >
                                     {item.label}
                                   </button>
@@ -298,7 +299,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                             })}
                           </div>
                         ) : null}
-                      </>
+                      </div>
                     );
                   })}
                 </div>
@@ -333,6 +334,7 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                   ]
                 }
               </button>
+
               <div
                 style={{
                   position: "absolute",
@@ -351,9 +353,11 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                         key={index}
                         value={item.value}
                         name={item.label}
+                        id={item.id}
                         className={Popupboxstyle.optionbutton}
                         onClick={(e) => {
                           selectedDropdownoption(e.target.value, e.target.name);
+                          setSelectedDropdownid(e.target.id);
                           setSelectedDropdownoptiondisplay((c) => [
                             ...c,
                             item.label,
@@ -408,10 +412,11 @@ function PopupBox({ buttonclick, btnclickcheck }) {
                 cursor: "pointer",
                 fontWeight: "bold",
               }}
-              onClick={()=>{handleSendData();setButtoncreated([]);setOptionvalues(dynamicoptionvalues);setSelectedDropdownoptiondisplay(["Add schema to segment"])}}
+              onClick={()=>{handleSendData();setButtoncreated([]);setOptionvalues(dynamicoptionvalues);setSelectedDropdownoptiondisplay(["Add schema to segment"]);setUsernameinput([])}}
             >
               Save the Segment
             </button>
+
             <button
               onClick={() => {
                 buttonclick((btnclick) => !btnclick);
