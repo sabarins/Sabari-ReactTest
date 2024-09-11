@@ -1,0 +1,11 @@
+.outer
+{
+    padding:5px;
+    transition: left 2s ease-in-out 1s; 
+    background-color: white;
+    margin: 16px;
+    cursor: pointer;
+    color: black;
+    border: 3px solid black;
+    padding: 8px;
+}
